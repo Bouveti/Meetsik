@@ -29,16 +29,6 @@ public class MainFragment extends Fragment {
     AnnonceAdapter adapter;
 
     @Override
-    public void OnCreate(Bundle savedInstanceState){
-        super.onCreate(savedInstanceState);
-        adapter = new AnnonceAdapter(getActivity());
-        if(savedInstanceState != null){
-            ArrayList<Annonce> resultat = (ArrayList<Annonce>)savedInstanceState.getSerializabme("result");
-            if(resultat != null)adapter.setAll(resultat);
-        }
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.main_fragment, null);
@@ -46,6 +36,12 @@ public class MainFragment extends Fragment {
         Date today = new Date();
         SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
         String dateToday = f.format(today);
+
+        adapter = new AnnonceAdapter(getActivity().getApplicationContext(),0);
+        if(savedInstanceState != null){
+            ArrayList<Annonce> resultat = (ArrayList<Annonce>)savedInstanceState.getSerializable("result");
+            if(resultat != null)adapter.setAll(resultat);
+        }
 
         logo = (ImageView) view.findViewById(R.id.logo);
         date = (TextView) view.findViewById(R.id.date);
