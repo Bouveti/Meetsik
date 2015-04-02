@@ -13,16 +13,24 @@ public class Annonce implements Serializable {
     private int id;
     private String nom;
     private int prix;
-    private Date date;
+    private String date;
     private Auteur auteur;
-    private Categorie categorie;
+    private String categorie;
+
+    public Annonce(){
+        this.id = 0;
+        this.nom ="";
+        this.prix = 0;
+        this.date = null;
+        this.auteur = null;
+        this.categorie = null;
+    }
 
     public Annonce(int id, String nom,int prix, String date) throws ParseException{
         this.id = id;
         this.nom = nom;
         this.prix = prix;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        this.date = sdf.parse(date);
+        this.date = date;
     }
 
     public int getId() {
@@ -49,11 +57,11 @@ public class Annonce implements Serializable {
         this.prix = prix;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -65,11 +73,11 @@ public class Annonce implements Serializable {
         this.auteur = auteur;
     }
 
-    public Categorie getCategorie() {
+    public String getCategorie() {
         return categorie;
     }
 
-    public void setCategorie(Categorie categorie) {
+    public void setCategorie(String categorie) {
         this.categorie = categorie;
     }
 }

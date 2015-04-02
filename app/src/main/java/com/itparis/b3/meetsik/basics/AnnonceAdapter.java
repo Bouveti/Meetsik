@@ -49,7 +49,7 @@ public class AnnonceAdapter extends ArrayAdapter <Annonce> {
                 setText(annonce.getNom());
         ((TextView)result.
                 findViewById(R.id.text_prix)).
-                setText(String.valueOf(annonce.getPrix()));
+                setText(String.valueOf(annonce.getPrix())+"€");
 
 
         return result;

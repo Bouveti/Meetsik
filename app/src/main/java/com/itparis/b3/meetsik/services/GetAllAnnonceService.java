@@ -2,8 +2,10 @@ package com.itparis.b3.meetsik.services;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.util.Log;
 
 import com.itparis.b3.meetsik.beans.Annonce;
+import com.itparis.b3.meetsik.beans.Auteur;
 
 import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
@@ -51,13 +53,13 @@ public class GetAllAnnonceService extends IntentService {
         InputStream in = null;
 
         try{
-
             url = new URL("localhost/Meetsik/web/app_dev.php/annoncepriceall");
             urlConnect =  (HttpURLConnection)url.openConnection();
+            Log.e("Response",""+urlConnect.getResponseCode());
             if(urlConnect.getResponseCode() == 200){
                 in = urlConnect.getInputStream();
                 String json = IOUtils.toString(in,"UTF-8");
-                System.out.println(json);
+                Log.e("json",json);
                 loadFromJSON("UTF-8");
             }
         }catch (MalformedURLException e){
@@ -68,7 +70,7 @@ public class GetAllAnnonceService extends IntentService {
             e.printStackTrace();
         }finally {
             try {
-                in.close();
+                if(in !=null)in.close();
             } catch (IOException e) {
                 urlConnect.disconnect();
                 e.printStackTrace();
@@ -85,6 +87,10 @@ public class GetAllAnnonceService extends IntentService {
 
                 JSONObject jsonAnnonce = annonces.getJSONObject(i);
                 Annonce annonce = new Annonce(jsonAnnonce.getInt("id"),jsonAnnonce.getString("nom"),jsonAnnonce.getInt("prix"),jsonAnnonce.getString("date"));
+                Auteur auteur = new Auteur();
+                auteur.seteMail(jsonAnnonce.getString("email"));
+                annonce.setAuteur(auteur);
+                annonce.setCategorie("Vente");
                 allAnnonces.add(annonce);
 
             }
@@ -94,5 +100,15 @@ public class GetAllAnnonceService extends IntentService {
             e.printStackTrace();
         }
 
+    }
+
+    public ArrayList<Annonce> getAllAnnonces(){
+
+        if(isDataLoaded)return allAnnonces;
+        else return null;
+    }
+
+    public boolean getIsDataLoaded(){
+        return isDataLoaded;
     }
 }
