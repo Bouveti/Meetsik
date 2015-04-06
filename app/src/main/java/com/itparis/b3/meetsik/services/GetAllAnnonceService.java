@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.itparis.b3.meetsik.beans.Annonce;
-import com.itparis.b3.meetsik.beans.Auteur;
 
 import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
@@ -53,8 +52,11 @@ public class GetAllAnnonceService extends IntentService {
         InputStream in = null;
 
         try{
-            url = new URL("localhost/Meetsik/web/app_dev.php/annoncepriceall");
+            url = new URL("http://192.168.1.29:8080/Meetsik/web/app_dev.php/annoncepriceall");
             urlConnect =  (HttpURLConnection)url.openConnection();
+            urlConnect.setConnectTimeout(15 * 1000);
+            urlConnect.setRequestMethod("GET");
+            urlConnect.connect();
             Log.e("Response",""+urlConnect.getResponseCode());
             if(urlConnect.getResponseCode() == 200){
                 in = urlConnect.getInputStream();
@@ -86,10 +88,7 @@ public class GetAllAnnonceService extends IntentService {
             for (int i=0;i<annonces.length();i++) {
 
                 JSONObject jsonAnnonce = annonces.getJSONObject(i);
-                Annonce annonce = new Annonce(jsonAnnonce.getInt("id"),jsonAnnonce.getString("nom"),jsonAnnonce.getInt("prix"),jsonAnnonce.getString("date"));
-                Auteur auteur = new Auteur();
-                auteur.seteMail(jsonAnnonce.getString("email"));
-                annonce.setAuteur(auteur);
+                Annonce annonce = new Annonce(jsonAnnonce.getInt("id"),jsonAnnonce.getString("nom"),jsonAnnonce.getInt("prix"),jsonAnnonce.getString("date"),jsonAnnonce.getString("email"));
                 annonce.setCategorie("Vente");
                 allAnnonces.add(annonce);
 

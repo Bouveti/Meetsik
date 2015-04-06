@@ -41,7 +41,6 @@ public class MainActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-
         showFragment(new MainFragment());
 
     }

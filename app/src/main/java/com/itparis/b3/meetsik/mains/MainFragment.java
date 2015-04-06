@@ -11,16 +11,15 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.itparis.b3.meetsik.basics.AnnoncesDataSource;
 import com.itparis.b3.meetsik.beans.Annonce;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 import com.itparis.b3.meetsik.basics.AnnonceAdapter;
 import com.itparis.b3.meetsik.R;
-import com.itparis.b3.meetsik.beans.Auteur;
 import com.itparis.b3.meetsik.services.GetAllAnnonceService;
 
 /**
@@ -33,18 +32,20 @@ public class MainFragment extends Fragment {
     ListView liste;
     AnnonceAdapter adapter;
     GetAllAnnonceService service;
+    AnnoncesDataSource dataBase;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.main_fragment, null);
+        dataBase = new AnnoncesDataSource(getActivity());
 
         Date today = new Date();
         SimpleDateFormat f = new SimpleDateFormat("dd/MM/yyyy");
         String dateToday = f.format(today);
 
-        Intent i = new Intent(getActivity(), GetAllAnnonceService.class);
-        getActivity().startService(i);
+        Intent intent = new Intent(getActivity(), GetAllAnnonceService.class);
+        getActivity().startService(intent);
 
 
         logo = (ImageView) view.findViewById(R.id.logo);
@@ -56,38 +57,21 @@ public class MainFragment extends Fragment {
         liste = (ListView) view.findViewById(R.id.listAnnonce);
 
         service = new GetAllAnnonceService();
-
-
         adapter = new AnnonceAdapter(getActivity(),0);
 
-        if(service.getIsDataLoaded())adapter.setAll((java.util.Collection<Annonce>) service.getAllAnnonces());
+        ArrayList<Annonce> allAnnonces = new ArrayList<Annonce>();
+
+        if(service.getIsDataLoaded()){
+            allAnnonces = (ArrayList<Annonce>) service.getAllAnnonces();
+            adapter.setAll(allAnnonces);
+
+            for(int i =0; i<allAnnonces.size();i++){
+                dataBase.createAnnonce(allAnnonces.get(i).getNom(),allAnnonces.get(i).getPrix(),allAnnonces.get(i).getDate(),allAnnonces.get(i).getCategorie(),allAnnonces.get(i).geteMail(),i);
+            }
+        }
         else {
-
-            ArrayList<Annonce> saved = new ArrayList<Annonce>();
-            Annonce a1 = new Annonce();
-            Annonce a2 = new Annonce();
-
-            Auteur durand = new Auteur();
-            durand.seteMail("durand@ece.fr");
-
-            a1.setId(4);
-            a1.setNom("Gratte");
-            a1.setPrix(2);
-            a1.setDate("2014-10-11T15:15:00+0200");
-            a1.setCategorie("Vente");
-            a1.setAuteur(durand);
-
-            a2.setId(1);
-            a2.setNom("Guitare Fender");
-            a2.setPrix(60);
-            a2.setDate("2015-02-03T11:29:12+0100");
-            a2.setCategorie("Vente");
-            a2.setAuteur(durand);
-
-            saved.add(a1);
-            saved.add(a2);
-            adapter.setAll(saved);
-
+            allAnnonces = (ArrayList<Annonce>) dataBase.getAllAnnonces();
+            adapter.setAll(allAnnonces);
         }
 
         if(adapter != null)liste.setAdapter(adapter);

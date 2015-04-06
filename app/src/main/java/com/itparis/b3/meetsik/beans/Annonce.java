@@ -14,19 +14,19 @@ public class Annonce implements Serializable {
     private String nom;
     private int prix;
     private String date;
-    private Auteur auteur;
     private String categorie;
+    private String eMail;
 
     public Annonce(){
         this.id = 0;
         this.nom ="";
         this.prix = 0;
         this.date = null;
-        this.auteur = null;
         this.categorie = null;
+        this.eMail = "";
     }
 
-    public Annonce(int id, String nom,int prix, String date) throws ParseException{
+    public Annonce(int id, String nom,int prix, String date,String eMail) throws ParseException{
         this.id = id;
         this.nom = nom;
         this.prix = prix;
@@ -65,12 +65,12 @@ public class Annonce implements Serializable {
         this.date = date;
     }
 
-    public Auteur getAuteur() {
-        return auteur;
+    public String geteMail(){
+        return this.eMail;
     }
 
-    public void setAuteur(Auteur auteur) {
-        this.auteur = auteur;
+    public void seteMail(String eMail){
+        this.eMail = eMail;
     }
 
     public String getCategorie() {
