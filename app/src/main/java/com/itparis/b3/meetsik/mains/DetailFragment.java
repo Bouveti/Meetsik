@@ -38,7 +38,7 @@ public class DetailFragment extends Fragment {
         date.setText(((Annonce)annonce).getDate().toString());
 
         auteur = (TextView) view.findViewById(R.id.textAuteur);
-        auteur.setText(((Annonce)annonce).getAuteur().geteMail());
+        auteur.setText(((Annonce)annonce).geteMail());
 
         categorie = (TextView) view.findViewById(R.id.textCategorie);
         categorie.setText(((Annonce)annonce).getCategorie());
