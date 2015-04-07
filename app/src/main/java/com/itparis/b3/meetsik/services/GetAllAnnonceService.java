@@ -52,7 +52,7 @@ public class GetAllAnnonceService extends IntentService {
         InputStream in = null;
 
         try{
-            url = new URL("http://192.168.1.29:8080/Meetsik/web/app_dev.php/annoncepriceall");
+            url = new URL("http://10.0.2.2/Meetsik/web/app_dev.php/annoncepriceall");
             urlConnect =  (HttpURLConnection)url.openConnection();
             urlConnect.setConnectTimeout(15 * 1000);
             urlConnect.setRequestMethod("GET");
