@@ -61,6 +61,7 @@ public class MainFragment extends Fragment {
 
         ArrayList<Annonce> allAnnonces = new ArrayList<Annonce>();
 
+        dataBase.open();
         if(service.getIsDataLoaded()){
             allAnnonces = (ArrayList<Annonce>) service.getAllAnnonces();
             adapter.setAll(allAnnonces);
@@ -73,6 +74,8 @@ public class MainFragment extends Fragment {
             allAnnonces = (ArrayList<Annonce>) dataBase.getAllAnnonces();
             adapter.setAll(allAnnonces);
         }
+
+        dataBase.close();
 
         if(adapter != null)liste.setAdapter(adapter);
 
