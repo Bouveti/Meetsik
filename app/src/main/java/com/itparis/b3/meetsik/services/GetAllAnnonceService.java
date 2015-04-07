@@ -62,7 +62,7 @@ public class GetAllAnnonceService extends IntentService {
                 in = urlConnect.getInputStream();
                 String json = IOUtils.toString(in,"UTF-8");
                 Log.e("json",json);
-                loadFromJSON("UTF-8");
+                loadFromJSON(json);
             }
         }catch (MalformedURLException e){
             e.printStackTrace();
